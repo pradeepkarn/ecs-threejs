@@ -20,14 +20,16 @@ export class InputSystem extends System {
         for (const entity of entities) {
             const input = world.getComponent(entity, Input);
             const playerControlled = world.getComponent(entity, PlayerControlled);
-            input.clearFrameFlags();
+
+            input.clearFrameFrags();
+
             const left = this.keys['KeyA'] ? 1 : 0;
             const right = this.keys['KeyD'] ? 1 : 0;
             const up = this.keys['KeyW'] ? 1 : 0;
             const down = this.keys['KeyS'] ? 1 : 0;
 
-            input.moveX = left - right;
-            input.moveY = up - down;
+            input.moveX = right-left;
+            input.moveZ = down-up;
 
             input.runHeld = !!this.keys['ShiftLeft'];
             const jumpNow = !!this.keys['Space'];
@@ -40,9 +42,10 @@ export class InputSystem extends System {
             }
             input.jumpHeld = jumpNow;
 
-            if(input.jumpBufferTime !== null){
-                input.jumpBufferTime += deltaTime;
+            if(input.jumpBufferTimer !== null){
+                input.jumpBufferTimer += deltaTime;
             }
+            
         }
     }
 }

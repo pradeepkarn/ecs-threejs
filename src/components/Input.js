@@ -4,7 +4,7 @@ export class Input extends Component {
         super();
         // Axis intent (raw) in range -1 to 1
         this.moveX = 0;
-        this.moveY = 0;
+        this.moveZ = 0;
         // Button intent (raw) in range 0 to 1
         this.runHeld = false;
         this.jumpHeld = false;
@@ -13,10 +13,10 @@ export class Input extends Component {
         this.jumpReleased = false; // true only if key was released
 
         // timestamp-style a simple timer for jump buffering
-        this.jumpBufferTime = 0;
+        this.jumpBufferTimer = 0;
     }
     // calls once per frame to reset the jumpPressed and jumpReleased flags
-    clearFrameFlags() {
+    clearFrameFrags() {
         this.jumpPressed = false;
         this.jumpReleased = false;
     }
