@@ -14,3 +14,9 @@
 # 2. Controller Second 
 # 3. Physics and Movement System next and
 # 4. Render System is last
+*********
+# Pipeline is important in ECS systems
+# 1. Input System write input data 
+# 2. Player controller turns that into motion
+# 3. Movement system moves the entity
+# 4. Render system draws the entity

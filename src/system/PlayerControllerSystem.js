@@ -26,8 +26,8 @@ export class PlayerControllerSystem extends System {
             // target speed 
             const mx = Number.isFinite(input.moveX) ? input.moveX : 0;
             const mz = Number.isFinite(input.moveZ) ? input.moveZ : 0;
-            const targetVX = input.moveX * speed;
-            const targetVZ = input.moveZ * speed;
+            const targetVX = mx * speed;
+            const targetVZ = mz * speed;
 
             // smooth acceleration
             const maxDelta = settings.acceleration * deltaTime;
@@ -51,9 +51,9 @@ export class PlayerControllerSystem extends System {
                 input.jumpBufferTimer = Infinity;
                 input.jumpPressed = false; //consume press
             }
-            // short hope 
+            // short hop 
             if (input.jumpReleased && velocity.y > 0) {
-                velocity *= 0.5;
+                velocity.y *= 0.5;
             }
         }
     }
