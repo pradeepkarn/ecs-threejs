@@ -13,7 +13,7 @@ function damp(current, target, smoothing, deltaTime) {
 }
 
 export class CameraSystem extends System {
-    construtor(camera) {
+    constructor(camera) {
         super();
         this.camera = camera;
         this.smoothedPosition = new THREE.Vector3();
@@ -21,12 +21,34 @@ export class CameraSystem extends System {
     }
     update(world, deltaTime) {
         const players = Query.entitiesWith(world, PlayerControlled, Transform);
-        const cameras = Query.entitiesWith(world, CameraFollow);
+        const cameras = Query.entitiesWith(world, CameraFollow);//
 
-        if (players.length ===0 || cameras.length === 0) return;
-            
+        if (players.length === 0 || cameras.length === 0) return;
+
         const playerEntity = players[0];
         const cameraEntity = cameras[0];
 
+        const playerTransform = world.getComponent(playerEntity, Transform);
+        const follow = world.getComponent(cameraEntity, CameraFollow);
+
+        const targetCamX = playerTransform.x + follow.offsetX;
+        const targetCamY = playerTransform.y + follow.offsetY;
+        const targetCamZ = playerTransform.z + follow.offsetZ;
+
+        if (!this.initialized) {
+            this.smoothedPosition.set(targetCamX, targetCamY, targetCamZ);
+            this.initialized = true;
+        }
+
+        this.smoothedPosition.x = damp(this.smoothedPosition.x, targetCamX, follow.smoothness, deltaTime);
+        this.smoothedPosition.y = damp(this.smoothedPosition.y, targetCamY, follow.smoothness, deltaTime);
+        this.smoothedPosition.z = damp(this.smoothedPosition.z, targetCamZ, follow.smoothness, deltaTime);
+
+        this.camera.position.copy(this.smoothedPosition);
+        this.camera.lookAt(
+            playerTransform.x,
+            playerTransform.y + follow.lookAtHeight,
+            playerTransform.z
+        );
     }
 }

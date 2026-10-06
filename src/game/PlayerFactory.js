@@ -8,6 +8,8 @@ import { Input } from '../components/Input.js';
 import { PlayerControlled } from '../components/PlayerControlled.js';
 import { ControllerSettings } from '../components/ControllerSettings.js';
 import { Grounded } from '../components/Grounded.js';
+import { ColliderAABB } from '../components/ColliderAABB.js';
+import { DynamicBody } from '../components/DynamicBody.js';
 
 
 export function createPlayer(world, scene) {
@@ -26,6 +28,8 @@ export function createPlayer(world, scene) {
     world.addComponent(entity, new Input());
     world.addComponent(entity, new ControllerSettings());
     world.addComponent(entity, new Grounded());
+    world.addComponent(entity, new DynamicBody());
+    world.addComponent(entity, new ColliderAABB(0.5, 0.5, 0.5));
     
 
     return entity;
